@@ -1,0 +1,102 @@
+ <html>
+
+	 <head>
+
+	 	<meta charset="UTF-8">
+	 	<title>Code PlayGround</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	 	<link rel="stylesheet" href="style.css"></link>
+
+	 </head>
+
+	 <body>
+	 
+		<div id="header">
+			
+			<div id="logo">
+				CodePlayGround
+			</div>
+
+			<div id="btnContainer">
+				
+				<div class="toggleBtn active" id="html">HTML
+				</div>
+				<div class="toggleBtn" id="css">CSS
+				</div>
+				<div class="toggleBtn" id="javascript">JavaScript
+				</div>
+				<div class="toggleBtn active" id="output">Output
+				</div>
+			</div>
+
+		</div>
+
+		<div id="bodyContainer">
+			
+			<textarea id="htmlTextArea" class="panel"><p>Hello World!</p></textarea>
+
+			<textarea id="cssTextArea" class="panel hidden">p {color : green;}</textarea>
+
+			<textarea id="javascriptTextArea" class="panel hidden">alert("hello world");</textarea>
+
+			<iframe id="outputTextArea" class="panel"></iframe>
+
+		</div>
+
+		<script>
+
+			function updateOuptut() {
+
+				$("#outputTextArea").contents().find("html").html("<html> <head> <style>" + $("#cssTextArea").val() + "</style> </head> <body>" +  $("#htmlTextArea").val() + "</body> </html> ");
+
+				document.getElementById("outputTextArea").contentWindow.eval($("#javascriptTextArea").val());
+
+			}
+
+			//this function is used to change the hover class
+			$(".toggleBtn").hover(function() {
+
+				$(this).addClass("highlightedBtn");
+
+			}, function(){
+
+				$(this).removeClass("highlightedBtn");
+
+			});
+
+			//This function is used to change the active class and to update the width of the text areas
+			$(".toggleBtn").click(function() {
+
+				$(this).toggleClass("active");
+
+				$(this).removeClass("highlightedBtn");
+
+				var panelId = $(this).attr("id") + "TextArea";
+				
+				$("#" + panelId).toggleClass("hidden");
+
+				var numberOfActivePanels = 4 - $(".hidden").length;
+
+				$(".panel").width(($(window).width() / numberOfActivePanels) - 5 );
+
+			});
+
+			$(".panel").height($(window).height() - $("#header").height() - 60);
+
+			$(".panel").width(($(window).width() / 2) - 5 );
+
+			updateOuptut();			
+
+			//this function is used to change the output content
+			$("#htmlTextArea").on('change keyup paste', function(){
+
+				updateOuptut();
+
+			});
+
+
+		</script>
+
+	 </body>
+
+ </html>
